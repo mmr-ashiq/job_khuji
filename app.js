@@ -9,7 +9,7 @@ dotenv.config({ path: './config/config.env' });
 
 connectDatabase();
 
-const jobs = require('./routes/jobs')
+const jobs = require('./routes/jobs.routes')
 
 app.use(jobs);
 

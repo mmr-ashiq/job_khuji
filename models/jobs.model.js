@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const jobSchema = new mongoose.Schema({
-	title: {
-		type: String,
-		required: [true, 'job title is required.'],
-		trim: true,
+    title: {
+        type: String,
+        required: [true, 'job title is required.'],
+        trim: true,
         maxlength: [100, 'job title must be less than 100 characters.'],
-	},
+    },
     slug: String,
     description: {
         type: String,
@@ -31,13 +31,13 @@ const jobSchema = new mongoose.Schema({
         type: [String],
         required: true,
         enum: {
-            values: ['IT', 'Finance', 'Marketing', 'Sales', 'HR', 'Education/Training' ,'Others'],
+            values: ['IT', 'Finance', 'Marketing', 'Sales', 'HR', 'Education/Training', 'Others'],
             message: 'Select correct option for industry.',
         }
     },
     jobType: {
         type: String,
-        required: true,,
+        required: true,
         enum: {
             values: ['Full Time', 'Part Time', 'Contract', 'Internship'],
             message: 'Select correct option for job type.',
@@ -66,7 +66,7 @@ const jobSchema = new mongoose.Schema({
     salary: {
         type: Number,
         required: ['true', 'expected salary is required.'],
-    }
+    },
     postingDate: {
         type: Date,
         default: Date.now,

@@ -4,7 +4,7 @@ const router = express.Router();
 const { 
     getJobs,
     newJob
- } = require('../controllers/jobsController');
+ } = require('../controllers/jobs.controller');
 
 router.route('/jobs').get(getJobs);
 

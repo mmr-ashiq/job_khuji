@@ -1,4 +1,4 @@
-const job = require('../models/jobs');
+const job = require('../models/jobs.model');
 
 // create all job => /api/v1/jobs
 exports.getJobs = (req, res, next) => {

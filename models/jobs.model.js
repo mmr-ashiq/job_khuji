@@ -19,7 +19,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         validate: [validator.isEmail, 'email is invalid.'],
     },
-    adress: {
+    address: {
         type: String,
         required: [true, 'job adress is required.'],
     },
@@ -59,7 +59,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ['No experience', '1-2 years', '2-3 years', '3-5 years', '5+ years'],
+            values: ['No Experience', '1-2 years', '2-3 years', '3-5 years', '5+ years'],
             message: 'Select correct option for experience.',
         },
     },

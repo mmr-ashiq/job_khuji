@@ -1,4 +1,4 @@
-const job = require('../models/jobs.model');
+const Job = require('../models/jobs.model');
 
 // create all job => /api/v1/jobs
 exports.getJobs = (req, res, next) => {
@@ -10,7 +10,8 @@ exports.getJobs = (req, res, next) => {
 
 // create a new job => /api/v1/job/new
 exports.newJob = async (req, res, next) => {
-    const job = await job.create(req.body);
+    console.log(req.body);
+    const job = await Job.create(req.body);
 
     res.status(200).json({
         success: true,

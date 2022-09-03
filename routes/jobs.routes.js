@@ -8,6 +8,6 @@ const {
 
 router.route('/jobs').get(getJobs);
 
-router.route('/jobs/new').post(newJob)
+router.route('/job/new').post(newJob)
 
 module.exports = router;

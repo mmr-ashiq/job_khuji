@@ -71,17 +71,34 @@ exports.updateJob = async (req, res, next) => {
 
 // delete job => /api/v1/job/:id
 exports.deleteJob = async (req, res, next) => {
-    const job = await Job.findByIdAndDelete(req.params.id);
+	const job = await Job.findByIdAndDelete(req.params.id);
 
-    if (!job) {
-        return res.status(404).json({
-            success: false,
-            message: 'job not found',
-        });
-    }
+	if (!job) {
+		return res.status(404).json({
+			success: false,
+			message: 'job not found',
+		});
+	}
 
-    res.status(200).json({
-        success: true,
-        message: 'job deleted',
-    });
-}
+	res.status(200).json({
+		success: true,
+		message: 'job deleted',
+	});
+};
+
+// get a single job with id and slug => /api/v1/job/:id/:slug
+exports.getSingleJob = async (req, res, next) => {
+	const job = await Job.find({$and: [{_id: req.params.id}, {slug: req.params.slug}]});
+
+	if (!job || job.length === 0) {
+		return res.status(404).json({
+			success: false,
+			message: 'job not found',
+		});
+	}
+
+	res.status(200).json({
+		success: true,
+		data: job,
+	});
+};

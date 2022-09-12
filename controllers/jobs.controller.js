@@ -88,7 +88,9 @@ exports.deleteJob = async (req, res, next) => {
 
 // get a single job with id and slug => /api/v1/job/:id/:slug
 exports.getSingleJob = async (req, res, next) => {
-	const job = await Job.find({$and: [{_id: req.params.id}, {slug: req.params.slug}]});
+	const job = await Job.find({
+		$and: [{ _id: req.params.id }, { slug: req.params.slug }],
+	});
 
 	if (!job || job.length === 0) {
 		return res.status(404).json({
@@ -102,3 +104,35 @@ exports.getSingleJob = async (req, res, next) => {
 		data: job,
 	});
 };
+
+// get stats about a topic => /api/v1/job/stats/:topic
+exports.getJobStats = async (req, res, next) => {
+	/* const stats = await Job.aggregate([
+		{
+			$match: { $text: { $search: req.params.topic } },
+		},
+		{
+			$group: {
+				_id: null,
+				// totalJobs: { $sum: 1 },
+				// averagePosition: { $avg: '$position' },
+				avgSalary: { $avg: '$salary' },
+				// minSalary: { $min: '$salary' },
+				// maxSalary: { $max: '$salary' },
+			},
+		},
+	]);
+
+	if (stats.length === 0) {
+		return res.status(200).json({
+			success: false,
+			message: `stats not found for ${req.params.topic}`,
+		});
+	}
+
+	res.status(200).json({
+		success: true,
+		data: stats,
+	}); */
+};
+

@@ -21,7 +21,7 @@ app.use(express.json());
 
 const jobs = require('./routes/jobs.routes');
 
-app.use('api/v1',jobs);
+app.use('/api/v1',jobs);
 
 app.all('*', (req, res, next) => {
 	next(new ErrorHandler(`${req.originalUrl} route not found`, 404));

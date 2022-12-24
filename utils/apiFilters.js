@@ -37,6 +37,16 @@ class APIFilters{
         return this;
     }
 
+    Pagination() {
+        const page = this.queryStr.page * 1 || 1;
+        const limit = this.queryStr.limit * 1 || 10;
+        const skip = (page - 1) * limit;
+
+        this.query = this.query.skip(skip).limit(limit);
+
+        return this;
+    }
+
     searchByQuery() {
         if (this.queryStr.q) {
             const query = this.queryStr.q.split('-').join(' ');

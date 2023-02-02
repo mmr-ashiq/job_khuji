@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 
 const connectDatabase = require('./config/database');
 const errorMiddleware = require('./middlewares/errors');
@@ -18,6 +19,7 @@ process.on('uncaughtException', err => {
 connectDatabase();
 
 app.use(express.json());
+app.use(cookieParser());
 
 const jobs = require('./routes/jobs.route');
 const auth = require('./routes/auth.route');

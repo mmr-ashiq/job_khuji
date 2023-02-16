@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
 	userName: {
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema({
 	},
 	role: {
 		type: String,
-		enum: ['user', 'employeer', 'admin'],
+		enum: ['user', 'employee', 'admin'],
 		default: 'user',
 		message: 'Please select a correct role'
 	},
@@ -69,6 +70,19 @@ userSchema.methods.getJwtToken = function () {
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+	const resetToken = crypto.randomBytes(32).toString('hex');
+
+	this.passwordResetToken = crypto
+		.createHash('sha256')
+		.update(resetToken)
+		.digest('hex');
+
+	this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+	return resetToken;
 };
 
 module.exports = mongoose.model('User', userSchema);

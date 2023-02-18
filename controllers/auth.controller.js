@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const catchAsync = require('../middlewares/asyncErrors');
 const ErrorHandler = require('../utils/errorHandler');
 const sendToken = require('../utils/jwtToken');
+const sendEmail = require('../utils/sendEmail');
 
 exports.signup = catchAsync(async (req, res, next) => {
 	const { userName, fullName, email, role, password, confirmPassword } = req.body;
@@ -34,7 +35,6 @@ exports.login = catchAsync(async (req, res, next) => {
 	const isPasswordMatched = await user.comparePassword(password);
 
 	if (!isPasswordMatched) {
-		console.log('aschi');
 		return next(new ErrorHandler('Invalid email or password', 401));
 	}
 
@@ -52,8 +52,27 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 	await user.save({ validateBeforeSave: false });
 
-	res.status(200).json({
-		success: true,
-		message: 'Token sent to your email',
-	});
+	const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/password/reset/${resetToken}`;
+
+	const message = `Please click on the link to reset your password: ${resetUrl}\n The link will expire in 10 minutes.`;
+
+	try {
+		await sendEmail({
+			email: user.email,
+			subject: 'Reset password | job-Khuji',
+			message,
+		});
+
+		res.status(200).json({
+			success: true,
+			message: `Email sent to: ${user.email}`,
+		});
+	} catch (error) {
+		user.passwordResetToken = undefined;
+		user.passwordResetExpires = undefined;
+
+		await user.save({ validateBeforeSave: false });
+
+		return next(new ErrorHandler(error.message, 500));
+	}
 });
